@@ -5,7 +5,6 @@ import java.util.List;
  * Utility methods for handling String arrays.
  */
 public final class ArrayOperations {
-
     private ArrayOperations() {
     }
     /**
