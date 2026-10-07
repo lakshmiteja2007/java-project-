@@ -1,46 +1,42 @@
 package edu.ccrm.util;
-
 import edu.ccrm.domain.Course;
 import edu.ccrm.domain.Student;
-
 import java.util.Comparator;
-
 /**
- * A few handy comparators for sorting.
- * Might add more later if needed.
+ * Common comparators used in CCRM.
  */
 public final class Comparators {
-
     private Comparators() {
-        // utility class, don't instantiate
     }
-
     /**
-     * Compares students by their full name.
+     * Sort students by registration number.
      */
-    public static Comparator<Student> byName() {
-        // not the most efficient, but clearer to read
-        return new Comparator<Student>() {
-            @Override
-            public int compare(Student s1, Student s2) {
-                String n1 = s1.name().full();
-                String n2 = s2.name().full();
-                return n1.compareTo(n2);
-            }
-        };
+    public static Comparator<Student> byRegNo() {
+        return (s1, s2) ->
+                s1.regNo().compareToIgnoreCase(s2.regNo());
     }
-
     /**
-     * Compares courses by their course code.
+     * Sort students by family name.
      */
-    public static Comparator<Course> byCode() {
-        // could just do Comparator.comparing(c -> c.code().code()), but writing it long-form
-        return (c1, c2) -> {
-            String code1 = c1.code().code();
-            String code2 = c2.code().code();
-            return code1.compareTo(code2);
-        };
+    public static Comparator<Student> byFamilyName() {
+        return Comparator.comparing(
+                s -> s.name().family(),
+                String.CASE_INSENSITIVE_ORDER
+        );
     }
-
-    // TODO: maybe add byCredits or bySemester later
+    /**
+     * Sort courses by title.
+     */
+    public static Comparator<Course> byTitle() {
+        return Comparator.comparing(
+                Course::title,
+                String.CASE_INSENSITIVE_ORDER
+        );
+    }
+    /**
+     * Sort courses by credits.
+     */
+    public static Comparator<Course> byCredits() {
+        return Comparator.comparingInt(Course::credits);
+    }
 }
