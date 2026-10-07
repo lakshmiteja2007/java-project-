@@ -1,46 +1,76 @@
 package edu.ccrm.util;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * A couple of small array helper methods.
- * Might add more later if we end up needing them.
+ * Utility methods for handling String arrays.
  */
 public final class ArrayOperations {
 
     private ArrayOperations() {
-        // don't let anyone instantiate this
     }
 
     /**
-     * Joins an array of strings with a separator.
-     * If the array is null/empty, returns an empty string.
+     * Combines all elements into a single string.
      */
-    public static String join(String[] arr, String sep) {
-        if (arr == null || arr.length == 0) {
+    public static String merge(String[] values, String delimiter) {
+
+        if (values == null || values.length == 0) {
             return "";
         }
-        if (sep == null) {
-            sep = ","; // default to comma just in case
+
+        if (delimiter == null || delimiter.isBlank()) {
+            delimiter = " ";
         }
 
-        // using built-in join, could also do a loop
-        String result = String.join(sep, arr);
-        return result;
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < values.length; i++) {
+
+            result.append(values[i]);
+
+            if (i < values.length - 1) {
+                result.append(delimiter);
+            }
+        }
+
+        return result.toString();
     }
 
     /**
-     * Returns a new array without the first element.
+     * Returns array excluding first element.
      */
-    public static String[] tail(String[] arr) {
-        if (arr == null || arr.length <= 1) {
-            return new String[0]; // safer than throwing
+    public static String[] skipFirst(String[] values) {
+
+        if (values == null || values.length <= 1) {
+            return new String[0];
         }
 
-        // not super efficient, but fine for now
-        String[] sliced = Arrays.copyOfRange(arr, 1, arr.length);
-        return sliced;
+        List<String> temp = new ArrayList<>();
+
+        for (int i = 1; i < values.length; i++) {
+            temp.add(values[i]);
+        }
+
+        return temp.toArray(new String[0]);
     }
 
-    // TODO: maybe add "head" or "concat" methods later
+    /**
+     * Checks whether value exists.
+     */
+    public static boolean contains(String[] values, String target) {
+
+        if (values == null || target == null) {
+            return false;
+        }
+
+        for (String value : values) {
+            if (target.equalsIgnoreCase(value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
